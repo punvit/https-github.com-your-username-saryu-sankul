@@ -2,7 +2,7 @@
 export const dynamic = 'force-dynamic'
 
 import { useEffect, useState } from "react"
-import { supabase } from "@/lib/supabase"
+import { getSupabaseClient } from "@/lib/supabase"
 import { Navbar } from "@/components/Navbar";
 
 export default function AdminPage() {
@@ -14,7 +14,7 @@ export default function AdminPage() {
     }, []);
 
     const fetchBookings = async () => {
-        const { data, error } = await supabase
+        const { data, error } = await getSupabaseClient()
             .from('bookings')
             .select('*')
             .order('created_at', { ascending: false });
@@ -24,7 +24,7 @@ export default function AdminPage() {
     }
 
     const verifyBooking = async (id: string) => {
-        const { error } = await supabase
+        const { error } = await getSupabaseClient()
             .from('bookings')
             .update({ status: 'confirmed' })
             .eq('id', id);
